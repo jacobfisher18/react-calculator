@@ -14,7 +14,8 @@ class Calculator extends Component {
 
     this.state = {
       displayText: '',
-      previousNumber: null
+      previousDisplayText: '',
+      operator: ''
     }
   }
 
@@ -27,11 +28,19 @@ class Calculator extends Component {
   }
 
   handleOperatorClick(operator) {
-    alert('operator');
+    this.setState({
+      operator,
+      previousDisplayText: this.state.displayText,
+      displayText: ''
+    })
   }
 
   handleClearClick() {
-    this.setState({ displayText: '' });
+    this.setState({
+      displayText: '',
+      previousDisplayText: '',
+      operator: ''
+    });
   }
 
   handleSignReverseClick() {
@@ -45,7 +54,34 @@ class Calculator extends Component {
   }
 
   handleEqualsClick() {
-    alert('equals');
+    let result;
+    const previousNumber = Number(this.state.previousDisplayText);
+    const currentNumber = Number(this.state.displayText);
+
+    switch (this.state.operator) {
+      case '+':
+        result = previousNumber + currentNumber;
+        break;
+      case '-':
+        result = previousNumber - currentNumber;
+        break;
+      case 'x':
+        result = previousNumber * currentNumber;
+        break;
+      case '/':
+        result = previousNumber / currentNumber;
+        break;
+      case '%':
+        result = previousNumber % currentNumber;
+        break;
+      default:
+        result = currentNumber;
+        break;        
+    }
+
+    let resultText = String(result).substring(0, MAX_TEXT_LENGTH);
+
+    this.setState({ displayText: resultText });
   }
 
   render() {
@@ -56,25 +92,25 @@ class Calculator extends Component {
         <ActionButton action={'+/-'} clickHandler={this.handleSignReverseClick.bind(this)}/>
         <ActionButton action={'%'} clickHandler={this.handleOperatorClick.bind(this, '%')}/>
         <span className='blue'>
-          <ActionButton action={'/'} clickHandler={this.handleOperatorClick.bind(this, '%')} />
+          <ActionButton action={'/'} clickHandler={this.handleOperatorClick.bind(this, '/')} />
         </span>
         <NumberButton value={'7'} clickHandler={this.handleNumberClick.bind(this, 7)}/>
         <NumberButton value={'8'} clickHandler={this.handleNumberClick.bind(this, 8)}/>
         <NumberButton value={'9'} clickHandler={this.handleNumberClick.bind(this, 9)}/>
         <span className='green'>
-          <ActionButton action={'x'} clickHandler={this.handleOperatorClick.bind(this, '%')} />
+          <ActionButton action={'x'} clickHandler={this.handleOperatorClick.bind(this, 'x')} />
         </span>
         <NumberButton value={'4'} clickHandler={this.handleNumberClick.bind(this, 4)}/>
         <NumberButton value={'5'} clickHandler={this.handleNumberClick.bind(this, 5)}/>
         <NumberButton value={'6'} clickHandler={this.handleNumberClick.bind(this, 6)} />
         <span className='yellow'>
-          <ActionButton action={'-'} clickHandler={this.handleOperatorClick.bind(this, '%')}/>
+          <ActionButton action={'-'} clickHandler={this.handleOperatorClick.bind(this, '-')}/>
         </span>
         <NumberButton value={'1'} clickHandler={this.handleNumberClick.bind(this, 1)} />
         <NumberButton value={'2'} clickHandler={this.handleNumberClick.bind(this, 2)}/>
         <NumberButton value={'3'} clickHandler={this.handleNumberClick.bind(this, 3)}/>
         <span className='red'>
-          <ActionButton action={'+'} clickHandler={this.handleOperatorClick.bind(this, '%')} />
+          <ActionButton action={'+'} clickHandler={this.handleOperatorClick.bind(this, '+')} />
         </span>
         <NumberButton value={'0'} clickHandler={this.handleNumberClick.bind(this, 0)} />
         <NumberButton value={'.'} clickHandler={this.handleNumberClick.bind(this, '.')}/>
