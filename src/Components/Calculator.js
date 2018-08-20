@@ -20,6 +20,65 @@ class Calculator extends Component {
     }
   }
 
+  componentWillMount() {
+    document.addEventListener("keypress", this.handleKeyPress.bind(this));
+  }
+
+  handleKeyPress(e) {
+    switch (e.charCode) {
+      case 48:
+        this.handleNumberClick(0);
+        break;
+      case 49:
+        this.handleNumberClick(1);
+        break;
+      case 50:
+        this.handleNumberClick(2);
+        break;
+      case 51:
+        this.handleNumberClick(3);
+        break;
+      case 52:
+        this.handleNumberClick(4);
+        break;
+      case 53:
+        this.handleNumberClick(5);
+        break;
+      case 54:
+        this.handleNumberClick(6);
+        break;
+      case 55:
+        this.handleNumberClick(7);
+        break;
+      case 56:
+        this.handleNumberClick(8);
+        break;
+      case 57:
+        this.handleNumberClick(9);
+        break;
+      case 13:
+        this.handleEqualsClick();
+        break;
+      case 99:
+        this.handleClearClick();
+        break;
+      case 120:
+        this.handleOperatorClick("*");
+        break;
+      case 47:
+        this.handleOperatorClick("/");
+        break;
+      case 61:
+        this.handleOperatorClick("+");
+        break;
+      case 45:
+        this.handleOperatorClick("-");
+        break;
+      default:
+        break;
+    }
+  }
+
   handleNumberClick(num) {
     if (this.state.displayText.length < MAX_TEXT_LENGTH) {
       let displayText = (this.state.displayTextIsOperator) ? '' : this.state.displayText;
