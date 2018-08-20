@@ -15,42 +15,62 @@ class Calculator extends Component {
     this.state = {
       displayText: '',
       previousDisplayText: '',
-      operator: ''
+      operator: '',
+      displayTextIsOperator: false
     }
   }
 
   handleNumberClick(num) {
     if (this.state.displayText.length < MAX_TEXT_LENGTH) {
-      let displayText = this.state.displayText;
-      displayText = displayText + String(num);
-      this.setState({ displayText })
+      let displayText = (this.state.displayTextIsOperator) ? '' : this.state.displayText;
+      displayText += String(num);
+      this.setState({
+        displayText,
+        displayTextIsOperator: false
+      });
     }
   }
 
   handleOperatorClick(operator) {
-    this.setState({
-      operator,
-      previousDisplayText: this.state.displayText,
-      displayText: ''
-    })
+    if (this.state.displayTextIsOperator) {
+      this.setState({
+        operator,
+        displayText: operator
+      });
+    } else {
+      this.setState({
+        operator,
+        previousDisplayText: this.state.displayText,
+        displayText: operator,
+        displayTextIsOperator: true
+      });
+    }
   }
 
   handleClearClick() {
     this.setState({
       displayText: '',
       previousDisplayText: '',
-      operator: ''
+      operator: '',
+      displayTextIsOperator: false
     });
   }
 
   handleSignReverseClick() {
-    let displayText = this.state.displayText;
-    if (displayText[0] === '-') {
-      displayText = displayText.substring(1);
-    } else {
-      displayText = '-' + displayText;
+    if (!this.state.displayTextIsOperator) {
+      let displayText = this.state.displayText;
+
+      if (displayText[0] === '-') {
+        displayText = displayText.substring(1);
+      } else {
+        displayText = '-' + displayText;
+      }
+
+      this.setState({
+        displayText,
+        displayTextIsOperator: false
+      });
     }
-    this.setState({ displayText });
   }
 
   handleEqualsClick() {
@@ -81,7 +101,10 @@ class Calculator extends Component {
 
     let resultText = String(result).substring(0, MAX_TEXT_LENGTH);
 
-    this.setState({ displayText: resultText });
+    this.setState({
+      displayText: resultText,
+      displayTextIsOperator: false
+    });
   }
 
   render() {
